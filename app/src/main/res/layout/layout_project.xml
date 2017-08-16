@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="project"
+            type="com.example.ambareeshb.payukickstarter.database.Project"/>
+    </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@android:color/holo_blue_light"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_project_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{project.title}"/>
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_project_blurp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{project.blurb}"
+        android:textSize="@dimen/test_size_large"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_default">
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_project_backers_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/test_size_normal"
+            android:text="@{project.backers}"
+            android:layout_gravity="left"/>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_project_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/test_size_normal"
+            android:text="@{project.endTime.toString()}"
+            android:layout_gravity="right"/>
+    </LinearLayout>
+
 </LinearLayout>
+</layout>

@@ -1,37 +1,41 @@
-package com.example.ambareeshb.payukickstarter.livedata;
+package com.example.ambareeshb.payukickstarter.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.util.Log;
 
 import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
 import com.example.ambareeshb.payukickstarter.database.Project;
+import com.example.ambareeshb.payukickstarter.database.ProjectsDao;
 import com.example.ambareeshb.payukickstarter.helpers.RetrofitHelper;
 
 import java.util.List;
 
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import javax.inject.Inject;
+
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
  * Created by ambareeshb on 13/08/17.
+ * A repository of users.
  */
 
-public class ProjectListLiveData extends LiveData<List<Project>> {
-    List<Project> projects;
+public class ProjectsRepository {
+    private  LiveData<List<Project>> projects;
+    private ProjectsDao projectsDao;
 
-    @Override
-    protected void onActive() {
-        super.onActive();
-        updateProjects();
+    @Inject
+    public ProjectsRepository(ProjectsDao projectDao){
+        this.projectsDao = projectDao;
     }
 
-    @Override
-    protected void onInactive() {
-        super.onInactive();
+    public LiveData<List<Project>> getProjects() {
+        projects = projectsDao.getAll();
+        List<Project> test = projects.getValue();
+        updateProjects();
+        return projects;
     }
 
     /**
@@ -54,7 +58,11 @@ public class ProjectListLiveData extends LiveData<List<Project>> {
 
                     @Override
                     public void onNext(List<Project> projects) {
-                    postValue(projects);
+                        Log.d("Inserting in progress","true");
+
+                    projectsDao.insertAll(projects);
+                        Log.d("Inserting completed","true");
+
                     }
                 });
     }

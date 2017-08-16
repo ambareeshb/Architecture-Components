@@ -7,6 +7,8 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +21,17 @@ import com.example.ambareeshb.payukickstarter.viewmodels.ProjectListViewModel;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ProjectList extends LifecycleFragment {
+    @BindView(R.id.rv_project_list)
+    RecyclerView projectRecycler;
 
-
+    private ProjectAdapter adapter;
     public ProjectList() {
         // Required empty public constructor
     }
@@ -39,17 +46,28 @@ public class ProjectList extends LifecycleFragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this,view);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
         ProjectListViewModel model = ViewModelProviders.of(this).get(ProjectListViewModel.class);
         model.getProjects().observe(this, new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projects) {
                 //update ui
-                Log.d("Got data","got fata");
-                ((App)(getActivity().getApplication())).getmDb().projectsDao().insertAll(projects);
-                List<Project> projects1 = ((App)(getActivity().getApplication())).getmDb().projectsDao().findProjectsWithName("Cata");
-                Log.d("Got data","got data");
+                if(adapter == null){
+                    adapter = new ProjectAdapter(projects);
+                    projectRecycler.setLayoutManager(new
+                            LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+                    projectRecycler.setAdapter(adapter);
+                }
+                else adapter.setProjects(projects);
             }
         });
     }

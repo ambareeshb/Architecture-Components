@@ -1,25 +1,37 @@
 package com.example.ambareeshb.payukickstarter;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
 
-import com.example.ambareeshb.payukickstarter.database.AppDatabase;
+import com.example.ambareeshb.payukickstarter.DI.ApplicationComponent;
+import com.example.ambareeshb.payukickstarter.DI.DaggerApplicationComponent;
+import com.example.ambareeshb.payukickstarter.DI.modules.ApplicationModule;
 
 /**
  * Created by ambareeshb on 13/08/17.
  */
 
 public class App extends Application {
-    private AppDatabase mDb;
+
+    private ApplicationComponent applicationComponent;
     @Override
     public void onCreate() {
         super.onCreate();
-        mDb = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "AppDatabase").allowMainThreadQueries().build();
+
+    initApplicationComponent();
 
     }
 
-    public AppDatabase getmDb() {
-        return mDb;
+    /**
+     * Initialise application component.
+     */
+    private void initApplicationComponent() {
+        applicationComponent = DaggerApplicationComponent.builder().
+                applicationModule(new ApplicationModule(this))
+                .build();
+    }
+
+
+    public ApplicationComponent getApplicationComponent() {
+        return applicationComponent;
     }
 }

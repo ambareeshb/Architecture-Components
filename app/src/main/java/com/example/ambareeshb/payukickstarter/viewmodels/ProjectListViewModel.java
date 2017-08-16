@@ -3,12 +3,10 @@ package com.example.ambareeshb.payukickstarter.viewmodels;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
-import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
+import com.example.ambareeshb.payukickstarter.App;
 import com.example.ambareeshb.payukickstarter.database.Project;
-import com.example.ambareeshb.payukickstarter.helpers.RetrofitHelper;
-import com.example.ambareeshb.payukickstarter.livedata.ProjectListLiveData;
+import com.example.ambareeshb.payukickstarter.repositories.ProjectsRepository;
 
 import java.util.List;
 
@@ -18,18 +16,20 @@ import java.util.List;
 
 public class ProjectListViewModel extends AndroidViewModel {
 
-    ProjectListLiveData projects = new ProjectListLiveData();;
+    ProjectsRepository projects;
+
 
     public ProjectListViewModel(Application application) {
         super(application);
+        projects = ((App)application).getApplicationComponent().projectsRepository();
     }
 
     /**
      * Get LiveData list of projects .
      */
 
-    public ProjectListLiveData getProjects() {
-        return projects;
+    public LiveData<List<Project>> getProjects() {
+        return projects.getProjects();
     }
 
 

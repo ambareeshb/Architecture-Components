@@ -1,5 +1,6 @@
 package com.example.ambareeshb.payukickstarter.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
@@ -12,7 +13,7 @@ import java.util.List;
 @Dao
 public interface ProjectsDao {
     @Query("SELECT * FROM Project")
-    List<Project> getAll();
+    LiveData<List<Project>> getAll();
     @Query("SELECT * FROM Project where slNo BETWEEN :startSlNo AND :endSlNo")
     List<Project> getProjectsAfter(long startSlNo, long endSlNo);
     @Insert
