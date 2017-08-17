@@ -16,9 +16,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadProjectListFragment() {
-        new FragmentUtils(getSupportFragmentManager())
+        getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container,new ProjectList())
-                .setTransition(R.anim.enter_from_right,R.anim.exit_to_right)
                 .commit();
+//        new FragmentUtils(getSupportFragmentManager())
+//                .add(R.id.fragment_container,new ProjectList())
+//                .setTransition(R.anim.enter_from_right,R.anim.exit_to_right)
+//                .commit();
     }
 }

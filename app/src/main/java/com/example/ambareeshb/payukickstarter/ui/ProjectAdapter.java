@@ -1,7 +1,6 @@
 package com.example.ambareeshb.payukickstarter.ui;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -10,9 +9,10 @@ import com.example.ambareeshb.payukickstarter.R;
 import com.example.ambareeshb.payukickstarter.database.Project;
 import com.example.ambareeshb.payukickstarter.databinding.LayoutProjectBinding;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
-import butterknife.BindView;
+import java.util.Locale;
 
 /**
  * Created by ambareeshb on 13/08/17.
@@ -49,26 +49,24 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
-    LayoutProjectBinding layoutProjectBinding;
-        @BindView(R.id.tv_project_title)
-        AppCompatTextView textTitle;
-        @BindView(R.id.tv_project_blurp)
-        AppCompatTextView textBlurp;
-        @BindView(R.id.tv_project_backers_count)
-        AppCompatTextView textBackers;
-        @BindView(R.id.tv_project_date)
-        AppCompatTextView textDate;
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+        private LayoutProjectBinding layoutProjectBinding;
+        private SimpleDateFormat dateFormater;
 
         public ViewHolder(LayoutProjectBinding binding) {
             super(binding.getRoot());
-
+            layoutProjectBinding = binding;
+            dateFormater = new SimpleDateFormat("EEE, dd, MM yyyy", Locale.US);
+            layoutProjectBinding.setViewHolder(this);
         }
 
         public void setBinding(Project project) {
             layoutProjectBinding.setProject(project);
             layoutProjectBinding.executePendingBindings();
+        }
 
+        public SimpleDateFormat getDateFormater() {
+            return dateFormater;
         }
     }
 }

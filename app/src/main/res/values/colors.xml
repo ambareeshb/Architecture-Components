@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="kickstarter_green">#05af3c</color>
+    <color name="kickstarter_tootlbar">#020621</color>
 </resources>
