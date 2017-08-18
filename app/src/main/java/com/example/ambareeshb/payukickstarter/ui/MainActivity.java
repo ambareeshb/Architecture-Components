@@ -1,7 +1,7 @@
 package com.example.ambareeshb.payukickstarter.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.ambareeshb.payukickstarter.R;
 import com.example.ambareeshb.payukickstarter.helpers.FragmentUtils;
@@ -16,12 +16,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadProjectListFragment() {
-        getSupportFragmentManager().beginTransaction()
+        new FragmentUtils(getSupportFragmentManager())
                 .add(R.id.fragment_container,new ProjectList())
+                .setTransition(R.anim.enter_from_right,R.anim.exit_to_right)
                 .commit();
-//        new FragmentUtils(getSupportFragmentManager())
-//                .add(R.id.fragment_container,new ProjectList())
-//                .setTransition(R.anim.enter_from_right,R.anim.exit_to_right)
-//                .commit();
     }
+
 }

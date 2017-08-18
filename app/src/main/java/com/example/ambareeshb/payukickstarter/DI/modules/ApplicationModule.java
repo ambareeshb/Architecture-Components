@@ -2,6 +2,10 @@ package com.example.ambareeshb.payukickstarter.DI.modules;
 
 import android.app.Application;
 
+import com.example.ambareeshb.payukickstarter.App;
+import com.example.ambareeshb.payukickstarter.helpers.FragmentUtils;
+
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -22,6 +26,4 @@ public class ApplicationModule {
     Application provideApp(){
         return app;
     }
-
-
 }

@@ -30,8 +30,7 @@ public class Project {
 //            "title":"Waterloop: The Canadian SpaceX Hyperloop Competition Team",
 //            "type":"Town",
 //            "url":"/projects/1629380361/waterloop-the-canadian-spacex-hyperloop-competitio?ref=discovery"
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+    @PrimaryKey
     @SerializedName("s.no")
     private int slNo;
     @SerializedName("amt.pledged")
@@ -47,13 +46,7 @@ public class Project {
     @SerializedName("url")
     private String projectUrl;
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
-    public int getId() {
-        return id;
-    }
 
     public int getSlNo() {
         return slNo;

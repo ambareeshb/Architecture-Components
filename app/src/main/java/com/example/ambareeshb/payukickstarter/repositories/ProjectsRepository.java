@@ -1,15 +1,16 @@
 package com.example.ambareeshb.payukickstarter.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.os.AsyncTask;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
+import com.example.ambareeshb.payukickstarter.App;
 import com.example.ambareeshb.payukickstarter.database.Project;
 import com.example.ambareeshb.payukickstarter.database.ProjectsDao;
-import com.example.ambareeshb.payukickstarter.helpers.RetrofitHelper;
 
 import java.util.List;
-
 
 import javax.inject.Inject;
 
@@ -23,17 +24,16 @@ import rx.schedulers.Schedulers;
  */
 
 public class ProjectsRepository {
-    private  LiveData<List<Project>> projects;
+    private LiveData<List<Project>> projects;
     private ProjectsDao projectsDao;
 
     @Inject
-    public ProjectsRepository(ProjectsDao projectDao){
+    public ProjectsRepository(ProjectsDao projectDao) {
         this.projectsDao = projectDao;
     }
 
     public LiveData<List<Project>> getProjects() {
         projects = projectsDao.getAll();
-        List<Project> test = projects.getValue();
         updateProjects();
         return projects;
     }
@@ -42,7 +42,8 @@ public class ProjectsRepository {
      * Call Api to get project list
      */
     private void updateProjects() {
-        ApiInterface apiInterface = RetrofitHelper.initRetrofit(ApiInterface.class);
+        ApiInterface apiInterface = App.getApplicationComponent()
+                .apiInterface();
         apiInterface.getProjects().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Project>>() {
@@ -53,20 +54,45 @@ public class ProjectsRepository {
 
                     @Override
                     public void onError(Throwable e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
                     }
 
                     @Override
                     public void onNext(List<Project> projects) {
-                        Log.d("Inserting in progress","true");
+                        Log.d("Inserting ", "in progress");
+                      new DatabaseJob()
+                              .execute(projects);
 
-                    projectsDao.insertAll(projects);
-                        Log.d("Inserting completed","true");
 
                     }
                 });
     }
 
+    /**
+     * Insert list of projects into DB.
+     *
+     * @param projects to insert.
+     */
+    @WorkerThread
+    private int insertIntoDataBase(List<Project> projects) {
+        return projectsDao.insertAll(projects).length;
+    }
 
+    /**
+     * Asynchronous job for database insertion.
+     */
+    private  class DatabaseJob extends AsyncTask<List<Project>,Integer,Integer>{
+
+        @Override
+        protected Integer doInBackground(List<Project>... params) {
+               return insertIntoDataBase(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Integer length) {
+            super.onPostExecute(length);
+            Log.d("Inserted count", " "+ length);
+        }
+    }
 
 }

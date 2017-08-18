@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="project"
@@ -14,6 +14,7 @@
     android:background="#349E96"
     android:padding="@dimen/padding_default"
     android:layout_height="wrap_content"
+    android:onClick="@{()-> viewHolder.loadWebView(project.projectUrl)}"
     android:layout_marginBottom="5dp">
 
     <android.support.v7.widget.AppCompatTextView
@@ -46,6 +47,10 @@
             android:text="@{viewHolder.dateFormater.format(project.endTime)}"
             />
     </LinearLayout>
-
+    <ImageView
+        app:imageUrl="@{project.title}"
+        app:error="@{@drawable/error}"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content" />
 </LinearLayout>
 </layout>

@@ -12,7 +12,7 @@ import com.example.ambareeshb.payukickstarter.DI.modules.ApplicationModule;
 
 public class App extends Application {
 
-    private ApplicationComponent applicationComponent;
+    private static ApplicationComponent applicationComponent;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -31,7 +31,7 @@ public class App extends Application {
     }
 
 
-    public ApplicationComponent getApplicationComponent() {
+    public static ApplicationComponent getApplicationComponent() {
         return applicationComponent;
     }
 }
