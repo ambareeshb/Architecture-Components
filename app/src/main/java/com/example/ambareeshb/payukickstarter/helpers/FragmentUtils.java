@@ -27,7 +27,16 @@ public class FragmentUtils {
         fragmentTransaction.add(containerId,fragment);
         return this;
     }
-
+    /**
+     * Add a given fragment to the given container.
+     * @param containerId of fragment
+     * @param fragment we are interested.
+     * @return this class
+     */
+    public FragmentUtils replace(int containerId, Fragment fragment){
+        fragmentTransaction.replace(containerId,fragment);
+        return this;
+    }
     /**
      * Commit a fragment transaction.
      * @return
@@ -44,5 +53,15 @@ public class FragmentUtils {
     public FragmentUtils setTransition(int start, int end){
         fragmentTransaction.setCustomAnimations(start,end);
         return this;
+    }
+
+    /**
+     *
+     * @param add
+     */
+    public FragmentUtils addToBackStack(boolean add,String tag){
+        if(add) fragmentTransaction.addToBackStack(tag);
+        return this;
+
     }
 }

@@ -7,6 +7,9 @@
        <variable
            name="viewHolder"
            type="com.example.ambareeshb.payukickstarter.ui.ProjectAdapter.ViewHolder"/>
+        <variable
+            name="onClicker"
+            type="com.example.ambareeshb.payukickstarter.ui.ProjectAdapter.OnClickListener"/>
     </data>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
@@ -14,7 +17,7 @@
     android:background="#349E96"
     android:padding="@dimen/padding_default"
     android:layout_height="wrap_content"
-    android:onClick="@{()-> viewHolder.loadWebView(project.projectUrl)}"
+    android:onClick="@{()-> onClicker.onClicked(project.projectUrl)}"
     android:layout_marginBottom="5dp">
 
     <android.support.v7.widget.AppCompatTextView

@@ -1,14 +1,14 @@
 package com.example.ambareeshb.payukickstarter.ui;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.example.ambareeshb.payukickstarter.R;
 import com.example.ambareeshb.payukickstarter.databinding.FragmentProjectBinding;
@@ -20,7 +20,7 @@ import com.example.ambareeshb.payukickstarter.databinding.FragmentProjectBinding
  * create an instance of this fragment.
  */
 public class ProjectFragment extends Fragment {
-    private static String WEB_VIEW_PATH ;
+    private static final String WEB_VIEW_PATH = "path" ;
     private FragmentProjectBinding fragmentProjectBinding;
 
     public ProjectFragment() {
@@ -51,15 +51,24 @@ public class ProjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         fragmentProjectBinding =
                 DataBindingUtil.inflate(inflater,R.layout.fragment_project,container,false);
         return fragmentProjectBinding.getRoot();
+
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentProjectBinding.webView.loadUrl(getArguments().getString(WEB_VIEW_PATH));
+        fragmentProjectBinding.webView.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url){
+                // do your handling codes here, which url is the requested url
+                // probably you need to open that url rather than redirect:
+                view.loadUrl(url);
+                return false; // then it is not handled by default action
+            }
+        });
     }
 }

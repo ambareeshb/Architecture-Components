@@ -5,6 +5,8 @@ import android.app.Application;
 import com.example.ambareeshb.payukickstarter.DI.ApplicationComponent;
 import com.example.ambareeshb.payukickstarter.DI.DaggerApplicationComponent;
 import com.example.ambareeshb.payukickstarter.DI.modules.ApplicationModule;
+import com.squareup.leakcanary.LeakCanary;
+
 
 /**
  * Created by ambareeshb on 13/08/17.
@@ -16,10 +18,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-    initApplicationComponent();
+        LeakCanary.install(this);
+        initApplicationComponent();
 
     }
+
 
     /**
      * Initialise application component.

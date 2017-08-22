@@ -60,10 +60,7 @@ public class ProjectsRepository {
                     @Override
                     public void onNext(List<Project> projects) {
                         Log.d("Inserting ", "in progress");
-                      new DatabaseJob()
-                              .execute(projects);
-
-
+                      new DatabaseJob().execute(projects);
                     }
                 });
     }

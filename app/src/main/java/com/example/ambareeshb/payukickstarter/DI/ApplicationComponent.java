@@ -19,12 +19,11 @@ import dagger.Component;
  * Created by ambareeshb on 16/08/17.
  */
  @Component(modules = {ApplicationModule.class, NetworkModule.class,
-         DatabaseModule.class, ActivityModule.class})
+         DatabaseModule.class})
  @Singleton
 public interface ApplicationComponent {
     Application application();
     ApiInterface apiInterface();
     ProjectsDao projectDao();
     ProjectsRepository projectsRepository();
-    FragmentManager fragmentManager();
 }

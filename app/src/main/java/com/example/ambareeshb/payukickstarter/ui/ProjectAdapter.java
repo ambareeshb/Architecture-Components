@@ -6,11 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.example.ambareeshb.payukickstarter.App;
 import com.example.ambareeshb.payukickstarter.R;
 import com.example.ambareeshb.payukickstarter.database.Project;
 import com.example.ambareeshb.payukickstarter.databinding.LayoutProjectBinding;
-import com.example.ambareeshb.payukickstarter.helpers.FragmentUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -22,18 +20,20 @@ import java.util.Locale;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHolder> {
     private List<Project> projects;
+    private OnClickListener onClickListner;
 
 
-    public ProjectAdapter(List<Project> projects){
+    public ProjectAdapter(List<Project> projects,OnClickListener onClickListner){
         this.projects = projects;
+        this.onClickListner = onClickListner;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutProjectBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()),
                         R.layout.layout_project,parent,false);
+        binding.setOnClicker(onClickListner);
         return new ViewHolder(binding);
-
     }
 
     @Override
@@ -68,18 +68,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         public void setBinding(Project project) {
             layoutProjectBinding.setProject(project);
             layoutProjectBinding.executePendingBindings();
-
         }
 
-        public void loadWebView(String url){
-            Log.d("Loading url",""+"htttp://www.kickstarter.com/"+url);
-            new FragmentUtils(App.getApplicationComponent().fragmentManager())
-                    .add(R.id.fragment_container,ProjectFragment.newInstance("htttp://www.kickstarter.com/"+url))
-                    .setTransition(R.anim.enter_from_right,R.anim.exit_to_right)
-                    .commit();
-        }
         public SimpleDateFormat getDateFormater() {
             return dateFormater;
         }
+    }
+
+
+
+    public  interface OnClickListener {
+         void onClicked(String url);
     }
 }

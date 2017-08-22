@@ -7,6 +7,8 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 /**
  * Created by ambareeshb on 13/08/17.
  */
@@ -16,7 +18,7 @@ public interface ProjectsDao {
     LiveData<List<Project>> getAll();
     @Query("SELECT * FROM Project where slNo BETWEEN :startSlNo AND :endSlNo")
     List<Project> getProjectsAfter(long startSlNo, long endSlNo);
-    @Insert
+    @Insert(onConflict = REPLACE)
     long[] insertAll(List<Project> projects);
     @Query("SELECT * FROM Project WHERE title LIKE :search")
     public List<Project> findProjectsWithName(String search);

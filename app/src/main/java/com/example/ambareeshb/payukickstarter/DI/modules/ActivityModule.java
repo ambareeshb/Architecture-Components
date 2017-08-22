@@ -2,9 +2,9 @@ package com.example.ambareeshb.payukickstarter.DI.modules;
 
 import android.support.v4.app.FragmentManager;
 
+import com.example.ambareeshb.payukickstarter.DI.Qualifiers;
+import com.example.ambareeshb.payukickstarter.DI.Scopes;
 import com.example.ambareeshb.payukickstarter.ui.MainActivity;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,7 +14,7 @@ import dagger.Provides;
  */
 
 @Module
-@Singleton
+@Scopes.ActivityScope
 public class ActivityModule {
     private MainActivity mainActivity;
 
@@ -26,6 +26,7 @@ public class ActivityModule {
     MainActivity provideMainActivity(){
         return this.mainActivity;
     }
+
     @Provides
     FragmentManager provideFragementManger(MainActivity activity) {
         return activity.getSupportFragmentManager();
