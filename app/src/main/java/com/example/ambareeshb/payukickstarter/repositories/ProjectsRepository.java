@@ -1,6 +1,7 @@
 package com.example.ambareeshb.payukickstarter.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -9,6 +10,7 @@ import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
 import com.example.ambareeshb.payukickstarter.App;
 import com.example.ambareeshb.payukickstarter.database.Project;
 import com.example.ambareeshb.payukickstarter.database.ProjectsDao;
+import com.example.ambareeshb.payukickstarter.resources.Resource;
 
 import java.util.List;
 
@@ -24,8 +26,9 @@ import rx.schedulers.Schedulers;
  */
 
 public class ProjectsRepository {
-    private LiveData<List<Project>> projects;
+
     private ProjectsDao projectsDao;
+    private LiveData<List<Project>> projects;
 
     @Inject
     public ProjectsRepository(ProjectsDao projectDao) {
@@ -34,8 +37,18 @@ public class ProjectsRepository {
 
     public LiveData<List<Project>> getProjects() {
         projects = projectsDao.getAll();
-        updateProjects();
+        if(shouldFetch(projects)) updateProjects();
         return projects;
+    }
+
+    /**
+     * Whether to fetch data from DB.
+     *
+     * @param oldData
+     * @return
+     */
+    private boolean shouldFetch(LiveData<List<Project>> oldData) {
+        return true;
     }
 
     /**
@@ -55,12 +68,13 @@ public class ProjectsRepository {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+
                     }
 
                     @Override
                     public void onNext(List<Project> projects) {
                         Log.d("Inserting ", "in progress");
-                      new DatabaseJob().execute(projects);
+                        new DatabaseJob().execute(projects);
                     }
                 });
     }
@@ -78,17 +92,17 @@ public class ProjectsRepository {
     /**
      * Asynchronous job for database insertion.
      */
-    private  class DatabaseJob extends AsyncTask<List<Project>,Integer,Integer>{
+    private class DatabaseJob extends AsyncTask<List<Project>, Integer, Integer> {
 
         @Override
         protected Integer doInBackground(List<Project>... params) {
-               return insertIntoDataBase(params[0]);
+            return insertIntoDataBase(params[0]);
         }
 
         @Override
         protected void onPostExecute(Integer length) {
             super.onPostExecute(length);
-            Log.d("Inserted count", " "+ length);
+            Log.d("Inserted count", " " + length);
         }
     }
 

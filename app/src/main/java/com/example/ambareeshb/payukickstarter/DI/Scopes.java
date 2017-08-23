@@ -14,6 +14,7 @@ public class Scopes {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface ActivityScope {
     }
+
     @Scope
     @Retention(RetentionPolicy.RUNTIME)
     public @interface FragmentScope {
