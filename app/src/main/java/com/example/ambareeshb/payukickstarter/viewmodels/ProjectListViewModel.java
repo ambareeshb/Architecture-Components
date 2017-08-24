@@ -5,7 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
 import com.example.ambareeshb.payukickstarter.App;
-import com.example.ambareeshb.payukickstarter.database.Project;
+import com.example.ambareeshb.payukickstarter.database.enitities.Project;
 import com.example.ambareeshb.payukickstarter.repositories.ProjectsRepository;
 
 import java.util.List;

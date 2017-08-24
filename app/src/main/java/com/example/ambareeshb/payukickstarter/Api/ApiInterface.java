@@ -1,6 +1,6 @@
 package com.example.ambareeshb.payukickstarter.Api;
 
-import com.example.ambareeshb.payukickstarter.database.Project;
+import com.example.ambareeshb.payukickstarter.database.enitities.Project;
 
 import java.util.List;
 

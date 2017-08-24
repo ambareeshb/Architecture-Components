@@ -4,7 +4,7 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 
 import com.example.ambareeshb.payukickstarter.database.AppDatabase;
-import com.example.ambareeshb.payukickstarter.database.ProjectsDao;
+import com.example.ambareeshb.payukickstarter.database.daos.ProjectsDao;
 
 import javax.inject.Singleton;
 

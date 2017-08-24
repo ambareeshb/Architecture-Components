@@ -2,7 +2,6 @@ package com.example.ambareeshb.payukickstarter.ui;
 
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;

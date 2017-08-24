@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ambareeshb.payukickstarter.R;
-import com.example.ambareeshb.payukickstarter.database.Project;
+import com.example.ambareeshb.payukickstarter.database.enitities.Project;
 import com.example.ambareeshb.payukickstarter.databinding.FragmentProjectListBinding;
 import com.example.ambareeshb.payukickstarter.viewmodels.ProjectListViewModel;
 

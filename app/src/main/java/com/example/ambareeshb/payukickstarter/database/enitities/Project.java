@@ -1,4 +1,4 @@
-package com.example.ambareeshb.payukickstarter.database;
+package com.example.ambareeshb.payukickstarter.database.enitities;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

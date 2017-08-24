@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.ambareeshb.payukickstarter.R;
-import com.example.ambareeshb.payukickstarter.database.Project;
+import com.example.ambareeshb.payukickstarter.database.enitities.Project;
 import com.example.ambareeshb.payukickstarter.databinding.LayoutProjectBinding;
 
 import java.text.SimpleDateFormat;

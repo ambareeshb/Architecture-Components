@@ -1,9 +1,11 @@
-package com.example.ambareeshb.payukickstarter.database;
+package com.example.ambareeshb.payukickstarter.database.daos;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+
+import com.example.ambareeshb.payukickstarter.database.enitities.Project;
 
 import java.util.List;
 
@@ -21,5 +23,5 @@ public interface ProjectsDao {
     @Insert(onConflict = REPLACE)
     long[] insertAll(List<Project> projects);
     @Query("SELECT * FROM Project WHERE title LIKE :search")
-    public List<Project> findProjectsWithName(String search);
+    List<Project> findProjectsWithName(String search);
 }

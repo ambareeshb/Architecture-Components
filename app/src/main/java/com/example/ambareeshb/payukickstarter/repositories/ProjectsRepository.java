@@ -1,16 +1,14 @@
 package com.example.ambareeshb.payukickstarter.repositories;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
 import com.example.ambareeshb.payukickstarter.App;
-import com.example.ambareeshb.payukickstarter.database.Project;
-import com.example.ambareeshb.payukickstarter.database.ProjectsDao;
-import com.example.ambareeshb.payukickstarter.resources.Resource;
+import com.example.ambareeshb.payukickstarter.database.enitities.Project;
+import com.example.ambareeshb.payukickstarter.database.daos.ProjectsDao;
 
 import java.util.List;
 

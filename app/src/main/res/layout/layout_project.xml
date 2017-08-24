@@ -3,7 +3,7 @@
     <data>
         <variable
             name="project"
-            type="com.example.ambareeshb.payukickstarter.database.Project"/>
+            type="com.example.ambareeshb.payukickstarter.database.enitities.Project"/>
        <variable
            name="viewHolder"
            type="com.example.ambareeshb.payukickstarter.ui.ProjectAdapter.ViewHolder"/>
