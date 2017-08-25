@@ -63,8 +63,8 @@ public class ProjectList extends LifecycleFragment implements ProjectAdapter.OnC
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        ProjectListViewModel model = ViewModelProviders.of(this).get(ProjectListViewModel.class);
+        ProjectListViewModel model =
+                ViewModelProviders.of(this).get(ProjectListViewModel.class);
         model.getProjects().observe(this, new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projects) {
@@ -74,7 +74,8 @@ public class ProjectList extends LifecycleFragment implements ProjectAdapter.OnC
                     projectRecycler.setLayoutManager(new
                             LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                     projectRecycler.setAdapter(adapter);
-                } else adapter.setProjects(projects);
+                }
+                adapter.setProjects(projects);
             }
         });
     }

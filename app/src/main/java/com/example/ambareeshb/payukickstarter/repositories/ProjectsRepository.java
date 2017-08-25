@@ -7,9 +7,11 @@ import android.util.Log;
 
 import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
 import com.example.ambareeshb.payukickstarter.App;
+import com.example.ambareeshb.payukickstarter.Constants;
 import com.example.ambareeshb.payukickstarter.database.enitities.Project;
 import com.example.ambareeshb.payukickstarter.database.daos.ProjectsDao;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,29 +26,55 @@ import rx.schedulers.Schedulers;
  */
 
 public class ProjectsRepository {
+    private static String LOG_TAG = "Project Repo";
 
     private ProjectsDao projectsDao;
     private LiveData<List<Project>> projects;
+
 
     @Inject
     public ProjectsRepository(ProjectsDao projectDao) {
         this.projectsDao = projectDao;
     }
 
+
+    /**
+     * Live data of projects.
+     *
+     * @return
+     */
     public LiveData<List<Project>> getProjects() {
         projects = projectsDao.getAll();
-        if(shouldFetch(projects)) updateProjects();
+        fetchProjects();
         return projects;
+    }
+
+    /**
+     * Get project from network.
+     */
+    public void fetchProjects() {
+        Log.d(LOG_TAG, "Fetching projects");
+        if (shouldFetch(projects)) updateProjects();
     }
 
     /**
      * Whether to fetch data from DB.
      *
-     * @param oldData
-     * @return
+     * @param oldData oldData from DB
+     * @return to retrieve data from network.
      */
     private boolean shouldFetch(LiveData<List<Project>> oldData) {
-        return true;
+        Date timeStamp = new Date(0);
+        if(oldData == null || oldData.getValue() == null) return true;
+
+        for (Project project : oldData.getValue()) {
+            timeStamp = (project.getTimeStamp().compareTo(timeStamp) < 0 ?
+                    timeStamp : project.getTimeStamp());
+        }
+        Log.d(LOG_TAG, "should fetch "+((new Date().getTime() - timeStamp.getTime()) >
+                Constants.NETWORK_FETCH_INTERVAL));
+        return (new Date().getTime() - timeStamp.getTime()) >
+                Constants.NETWORK_FETCH_INTERVAL;
     }
 
     /**
@@ -71,7 +99,7 @@ public class ProjectsRepository {
 
                     @Override
                     public void onNext(List<Project> projects) {
-                        Log.d("Inserting ", "in progress");
+                        Log.d(LOG_TAG, "Inserting in progress");
                         new DatabaseJob().execute(projects);
                     }
                 });
@@ -87,6 +115,7 @@ public class ProjectsRepository {
         return projectsDao.insertAll(projects).length;
     }
 
+
     /**
      * Asynchronous job for database insertion.
      */
@@ -94,13 +123,14 @@ public class ProjectsRepository {
 
         @Override
         protected Integer doInBackground(List<Project>... params) {
+
             return insertIntoDataBase(params[0]);
         }
 
         @Override
         protected void onPostExecute(Integer length) {
             super.onPostExecute(length);
-            Log.d("Inserted count", " " + length);
+            Log.d(LOG_TAG, "Inserted count" + length);
         }
     }
 

@@ -6,13 +6,12 @@ import android.arch.persistence.room.TypeConverters;
 
 import com.example.ambareeshb.payukickstarter.database.daos.ProjectsDao;
 import com.example.ambareeshb.payukickstarter.database.enitities.Project;
-import com.example.ambareeshb.payukickstarter.database.enitities.Statistics;
 
 /**
  * Created by ambareeshb on 13/08/17.
  */
 
-@Database(entities = {Project.class, Statistics.class}, version = 3,exportSchema = false)
+@Database(entities = {Project.class}, version = 3,exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract ProjectsDao projectsDao();

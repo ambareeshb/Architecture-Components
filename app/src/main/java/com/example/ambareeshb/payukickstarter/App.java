@@ -5,7 +5,7 @@ import android.app.Application;
 import com.example.ambareeshb.payukickstarter.DI.ApplicationComponent;
 import com.example.ambareeshb.payukickstarter.DI.DaggerApplicationComponent;
 import com.example.ambareeshb.payukickstarter.DI.modules.ApplicationModule;
-import com.squareup.leakcanary.LeakCanary;
+import com.facebook.stetho.Stetho;
 
 
 /**
@@ -18,9 +18,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        LeakCanary.install(this);
-        initApplicationComponent();
 
+        initApplicationComponent();
+        Stetho.initializeWithDefaults(this);
     }
 
 

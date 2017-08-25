@@ -16,7 +16,7 @@ import java.util.Date;
 @Entity
 
 public class Project {
-//    "s.no":65,
+    //    "s.no":65,
 //            "amt.pledged":26817,
 //            "blurb":"Our design philosophy embraces simplicity, enabling us to build a safe, high performance, and cost effective Hyperloop pod.",
 //            "by":"Waterloop",
@@ -43,9 +43,10 @@ public class Project {
     private String backers;
     @SerializedName("end.time")
     private Date endTime;
+    @SerializedName("timeStamp")
+    private Date timeStamp;
     @SerializedName("url")
     private String projectUrl;
-
 
 
     public int getSlNo() {
@@ -102,5 +103,14 @@ public class Project {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getTimeStamp() {
+        if (this.timeStamp == null) timeStamp = new Date();
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }
