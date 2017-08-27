@@ -1,10 +1,7 @@
-package com.example.ambareeshb.payukickstarter.DI;
-
-import android.app.Application;
+package com.example.ambareeshb.payukickstarter.DaggerTest;
 
 import com.example.ambareeshb.payukickstarter.Api.ApiInterface;
-import com.example.ambareeshb.payukickstarter.DI.modules.ApplicationModule;
-import com.example.ambareeshb.payukickstarter.DI.modules.DatabaseModule;
+import com.example.ambareeshb.payukickstarter.DI.ApplicationComponent;
 import com.example.ambareeshb.payukickstarter.DI.modules.NetworkModule;
 import com.example.ambareeshb.payukickstarter.database.AppDatabase;
 import com.example.ambareeshb.payukickstarter.database.daos.ProjectsDao;
@@ -15,13 +12,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * Created by ambareeshb on 16/08/17.
+ * Created by ambareeshb on 27/08/17.
  */
- @Component(modules = {ApplicationModule.class, NetworkModule.class,
-         DatabaseModule.class})
- @Singleton
-public interface ApplicationComponent {
-    Application application();
+
+@Component(modules = {DatabaseModule.class, NetworkModule.class})
+@Singleton
+public interface ApplicationComponentTest {
     ApiInterface apiInterface();
     AppDatabase database();
     ProjectsDao projectDao();

@@ -7,8 +7,10 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.content.ComponentName;
 import android.content.Context;
+import android.databinding.ObservableBoolean;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.example.ambareeshb.payukickstarter.App;
 import com.example.ambareeshb.payukickstarter.Constants;
@@ -25,15 +27,26 @@ import java.util.List;
 public class ProjectListViewModel extends AndroidViewModel {
 
     private ProjectsRepository projects;
+    private ObservableBoolean loading;
 
 
     public ProjectListViewModel(Application application) {
         super(application);
+        Log.d("ViewModel","Created");
         projects = ((App) application).getApplicationComponent().projectsRepository();
+        loading = projects.getLoading();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            scheduleJob(application,getProjectDataJobInfo(application));
+            //scheduleJob(application,getProjectDataJobInfo(application));
         }
+    }
+
+    /**
+     * Flag for indicating loading.
+     * @return whether loading.
+     */
+    public ObservableBoolean getLoading() {
+        return loading;
     }
 
     /**
@@ -41,7 +54,13 @@ public class ProjectListViewModel extends AndroidViewModel {
      */
 
     public LiveData<List<Project>> getProjects() {
-        return projects.getProjects();
+        return projects.fetchProjects();
+    }
+
+    @Override
+    protected void onCleared() {
+        Log.d("ViewModel","Cleared called");
+        super.onCleared();
     }
 
 

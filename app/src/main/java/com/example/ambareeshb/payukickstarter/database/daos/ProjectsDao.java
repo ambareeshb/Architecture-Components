@@ -18,6 +18,8 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface ProjectsDao {
     @Query("SELECT * FROM Project")
     LiveData<List<Project>> getAll();
+    @Query("SELECT * FROM Project")
+    List<Project> getAllList();
     @Query("SELECT * FROM Project where slNo BETWEEN :startSlNo AND :endSlNo")
     List<Project> getProjectsAfter(long startSlNo, long endSlNo);
     @Insert(onConflict = REPLACE)

@@ -18,12 +18,12 @@ import dagger.Provides;
 public class ApplicationModule {
     private Application app;
 
-    public  ApplicationModule(Application app){
+    public ApplicationModule(Application app){
         this.app = app;
     }
     @Provides
     @Singleton
-    Application provideApp(){
+    public Application provideApp(){
         return app;
     }
 }

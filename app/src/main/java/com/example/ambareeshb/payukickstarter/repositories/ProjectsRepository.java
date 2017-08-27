@@ -1,7 +1,13 @@
 package com.example.ambareeshb.payukickstarter.repositories;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableInt;
 import android.os.AsyncTask;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
@@ -27,34 +33,46 @@ import rx.schedulers.Schedulers;
 
 public class ProjectsRepository {
     private static String LOG_TAG = "Project Repo";
+    private ObservableBoolean loading;
 
     private ProjectsDao projectsDao;
-    private LiveData<List<Project>> projects;
+    private MediatorLiveData<List<Project>> mediatorProjects;
+
 
 
     @Inject
     public ProjectsRepository(ProjectsDao projectDao) {
         this.projectsDao = projectDao;
+        mediatorProjects = new MediatorLiveData<>();
+        loading = new ObservableBoolean();
+        loading.set(false);
     }
 
-
-    /**
-     * Live data of projects.
-     *
-     * @return
-     */
-    public LiveData<List<Project>> getProjects() {
-        projects = projectsDao.getAll();
-        fetchProjects();
-        return projects;
+    public ObservableBoolean getLoading() {
+        return loading;
     }
 
     /**
      * Get project from network.
      */
-    public void fetchProjects() {
-        Log.d(LOG_TAG, "Fetching projects");
-        if (shouldFetch(projects)) updateProjects();
+    public MediatorLiveData<List<Project>> fetchProjects() {
+        Log.d(LOG_TAG,"in fetch projects");
+        final LiveData<List<Project>> projects = projectsDao.getAll();
+        mediatorProjects.addSource(projects, new Observer<List<Project>>() {
+            @Override
+            public void onChanged(@Nullable List<Project> projectsList) {
+                    Log.d(LOG_TAG,"Mediator live data value changed");
+                    mediatorProjects.setValue(projectsList);
+                    if (shouldFetch(projects)) {
+                        Log.d(LOG_TAG, "starting network request");
+                        loading.set(true);
+                        updateProjects(App.getApplicationComponent().apiInterface());
+                    }
+
+            }
+        });
+        return mediatorProjects;
+
     }
 
     /**
@@ -63,15 +81,17 @@ public class ProjectsRepository {
      * @param oldData oldData from DB
      * @return to retrieve data from network.
      */
-    private boolean shouldFetch(LiveData<List<Project>> oldData) {
+    public boolean shouldFetch(final LiveData<List<Project>> oldData) {
         Date timeStamp = new Date(0);
-        if(oldData == null || oldData.getValue() == null) return true;
+        if (oldData == null  || oldData.getValue().isEmpty()) return true;
 
+        Log.v(LOG_TAG, "Old data value Now " + oldData.getValue());
         for (Project project : oldData.getValue()) {
             timeStamp = (project.getTimeStamp().compareTo(timeStamp) < 0 ?
                     timeStamp : project.getTimeStamp());
         }
-        Log.d(LOG_TAG, "should fetch "+((new Date().getTime() - timeStamp.getTime()) >
+        Log.d(LOG_TAG, "should fetch " + (new Date().getTime() - timeStamp.getTime())/1000+" s since last update");
+        Log.d(LOG_TAG,"should fetch"+ ((new Date().getTime() - timeStamp.getTime()) >
                 Constants.NETWORK_FETCH_INTERVAL));
         return (new Date().getTime() - timeStamp.getTime()) >
                 Constants.NETWORK_FETCH_INTERVAL;
@@ -80,29 +100,28 @@ public class ProjectsRepository {
     /**
      * Call Api to get project list
      */
-    private void updateProjects() {
-        ApiInterface apiInterface = App.getApplicationComponent()
-                .apiInterface();
-        apiInterface.getProjects().subscribeOn(Schedulers.io())
+    public void updateProjects(ApiInterface apiInterface) {
+        apiInterface.getProjects()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Project>>() {
-                    @Override
-                    public void onCompleted() {
+            @Override
+            public void onCompleted() {
 
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
 
-                    }
+            }
 
-                    @Override
-                    public void onNext(List<Project> projects) {
-                        Log.d(LOG_TAG, "Inserting in progress");
-                        new DatabaseJob().execute(projects);
-                    }
-                });
+            @Override
+            public void onNext(List<Project> projects) {
+                Log.d(LOG_TAG, "Inserting in progress");
+                new DatabaseJob().execute(projects);
+            }
+        });
     }
 
     /**
@@ -123,7 +142,12 @@ public class ProjectsRepository {
 
         @Override
         protected Integer doInBackground(List<Project>... params) {
-
+            try {
+                //Just for a horror
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return insertIntoDataBase(params[0]);
         }
 
@@ -131,6 +155,7 @@ public class ProjectsRepository {
         protected void onPostExecute(Integer length) {
             super.onPostExecute(length);
             Log.d(LOG_TAG, "Inserted count" + length);
+            loading.set(false);
         }
     }
 

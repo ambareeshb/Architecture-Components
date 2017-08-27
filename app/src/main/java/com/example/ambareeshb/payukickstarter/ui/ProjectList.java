@@ -50,6 +50,7 @@ public class ProjectList extends LifecycleFragment implements ProjectAdapter.OnC
         // Inflate the layout for this fragment
          binding = DataBindingUtil
                 .inflate(inflater,R.layout.fragment_project_list,container,false);
+
         return binding.getRoot();
     }
 
@@ -65,6 +66,7 @@ public class ProjectList extends LifecycleFragment implements ProjectAdapter.OnC
         super.onActivityCreated(savedInstanceState);
         ProjectListViewModel model =
                 ViewModelProviders.of(this).get(ProjectListViewModel.class);
+        binding.setLoading(model.getLoading());
         model.getProjects().observe(this, new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projects) {
@@ -75,7 +77,9 @@ public class ProjectList extends LifecycleFragment implements ProjectAdapter.OnC
                             LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
                     projectRecycler.setAdapter(adapter);
                 }
-                adapter.setProjects(projects);
+                else {
+                    adapter.setProjects(projects);
+                }
             }
         });
     }
@@ -83,6 +87,7 @@ public class ProjectList extends LifecycleFragment implements ProjectAdapter.OnC
 
     @Override
     public void onClicked(String url) {
+        onDestroy();
         loadWebView(url);
     }
 

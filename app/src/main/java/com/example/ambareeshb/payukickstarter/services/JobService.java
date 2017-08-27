@@ -17,7 +17,11 @@ public class JobService extends android.app.job.JobService {
     public boolean onStartJob(JobParameters params) {
         ProjectsRepository repo =
                 App.getApplicationComponent().projectsRepository();
-        repo.fetchProjects();
+        try {
+            repo.fetchProjects();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
     }
 

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         buildActivityComponent();
         setContentView(R.layout.activity_main);
         loadProjectListFragment();
-        scheduleJob(getApplication(),getProjectDataJobInfo(getApplication()));
+        //scheduleJob(getApplication(),getProjectDataJobInfo(getApplication()));
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
