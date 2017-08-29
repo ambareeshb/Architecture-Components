@@ -37,7 +37,7 @@ public class ProjectListViewModel extends AndroidViewModel {
         loading = projects.getLoading();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //scheduleJob(application,getProjectDataJobInfo(application));
+            scheduleJob(application,getProjectDataJobInfo(application));
         }
     }
 

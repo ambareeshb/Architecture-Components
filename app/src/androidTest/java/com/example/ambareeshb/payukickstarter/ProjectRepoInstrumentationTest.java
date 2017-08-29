@@ -66,23 +66,35 @@ public class ProjectRepoInstrumentationTest {
         Log.d("dataaaaaaaa","  "+applicationComponentTest.projectDao().getAllList());
         final LiveData<List<Project>> liveData = applicationComponentTest.projectDao().getAll();
         Log.d("dataaaaaaaa from Live","  "+liveData);
+        Assert.assertNotNull(liveData.getValue());
+
         mediatorLiveData.addSource(liveData, new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projects) {
                 Log.d("dataaaaaaaa from Live","  "+liveData);
-                Assert.assertNotNull(liveData);
+
             }
         });
     }
 
     @Test
     public void shouldFetchTestNull() {
-        Assert.assertEquals(applicationComponentTest.projectsRepository().shouldFetch(null), true);
+        Assert.assertEquals(applicationComponentTest.projectsRepository()
+                .shouldFetch(null), true);
 
     }
     @Test
     public void shouldFetchWithData(){
         final LiveData<List<Project>> liveData = applicationComponentTest.projectDao().getAll();
+        Assert.assertEquals(applicationComponentTest.projectsRepository().shouldFetch(liveData),
+                true);
+        liveData.observeForever(new Observer<List<Project>>() {
+            @Override
+            public void onChanged(@Nullable List<Project> projects) {
+                Assert.assertEquals(applicationComponentTest.projectsRepository().
+                        shouldFetch(liveData), true);
+            }
+        });
         mediatorLiveData.addSource(liveData, new Observer<List<Project>>() {
             @Override
             public void onChanged(@Nullable List<Project> projects) {
