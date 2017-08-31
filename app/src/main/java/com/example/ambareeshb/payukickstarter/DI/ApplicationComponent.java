@@ -24,7 +24,5 @@ public interface ApplicationComponent {
     Application application();
     ApiInterface apiInterface();
     AppDatabase database();
-    ProjectsDao projectDao();
     ProjectsRepository projectsRepository();
-
 }

@@ -14,7 +14,7 @@ import com.facebook.stetho.Stetho;
 
 public class App extends Application {
 
-    private static ApplicationComponent applicationComponent;
+    public static ApplicationComponent applicationComponent;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -33,8 +33,4 @@ public class App extends Application {
                 .build();
     }
 
-
-    public static ApplicationComponent getApplicationComponent() {
-        return applicationComponent;
-    }
 }

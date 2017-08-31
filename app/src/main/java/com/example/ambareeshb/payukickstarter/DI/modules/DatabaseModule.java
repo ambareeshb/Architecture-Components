@@ -6,6 +6,7 @@ import android.arch.persistence.room.Room;
 import com.example.ambareeshb.payukickstarter.DI.Qualifiers;
 import com.example.ambareeshb.payukickstarter.database.AppDatabase;
 import com.example.ambareeshb.payukickstarter.database.daos.ProjectsDao;
+import com.example.ambareeshb.payukickstarter.repositories.ProjectsRepository;
 
 import javax.inject.Singleton;
 
@@ -28,6 +29,11 @@ public class DatabaseModule {
     AppDatabase provideDatabase(Application app){
        return Room.databaseBuilder(app,
                 AppDatabase.class, "AppDatabase").build();
+    }
+    @Provides
+    @Singleton
+    ProjectsRepository provideRepository(ProjectsDao dao){
+        return new ProjectsRepository(dao);
     }
 //    @Provides
 //    @Singleton
